@@ -1,6 +1,6 @@
 const userModel = require('@/models/userModel');
 const { uploadFile } = require('@/util/upload');
-const { publicPath } = require('@/util/common');
+const methods = require('@/util/methods');
 
 class userController {
   // 用户登录
@@ -47,7 +47,7 @@ class userController {
       errmsg: '操作成功'
     };
     // 上传文件请求处理
-    let serverFilePath = `${publicPath()}/upload`;
+    let serverFilePath = `${methods.publicPath()}/upload`;
     console.log(serverFilePath);
 
     // 上传文件事件

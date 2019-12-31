@@ -31,9 +31,9 @@ app.use(
 app.use(json());
 app.use(logger());
 
-const { webPath, publicPath } = require('@/util/common');
-app.use(koaStatic(webPath())); // 静态资源 web ：存在前端页面代码
-app.use(koaStatic(publicPath())); // 静态资源 public ：存放资源文件
+const methods = require('@/util/methods');
+app.use(koaStatic(methods.webPath())); // 静态资源 web ：存在前端页面代码
+app.use(koaStatic(methods.publicPath())); // 静态资源 public ：存放资源文件
 
 // logger
 app.use(async (ctx, next) => {
