@@ -2,9 +2,10 @@ const inspect = require('util').inspect;
 const path = require('path');
 const fs = require('fs');
 const Busboy = require('busboy');
+const dayjs = require('dayjs');
+const methods = require('@/utils/methods');
 
 /**
- * 同步创建文件目录
  * @param  {string} dirname 目录绝对地址
  * @return {boolean}        创建目录结果
  */
@@ -30,9 +31,9 @@ function getSuffixName(fileName) {
 }
 
 /**
- * 上传文件
+ * 上传文件/图片
  * @param  {object} ctx     koa上下文
- * @param  {object} options 文件上传参数 fileType文件类型， path文件存放路径
+ * @param  {object} options 文件上传参数:{fileType:'images'} 、{fileType:'file'}等 fileType文件类型
  * @return {promise}
  */
 function uploadFile(ctx, options) {
@@ -42,19 +43,28 @@ function uploadFile(ctx, options) {
 
   // 获取类型
   let fileType = options.fileType || 'common';
-  let filePath = path.join(options.path, fileType);
+  let filePath = path.join(
+    methods.publicPath(),
+    'upload',
+    fileType,
+    dayjs().format('YYYY-MM-DD')
+  );
   let mkdirResult = mkdirsSync(filePath);
 
   return new Promise((resolve, reject) => {
     console.log('文件上传中...');
+
     let result = {
-      status: false,
-      filePath: '',
+      status: false, // 上传结果
+      filePath: '', // 保存的路径
       formData: {} // 跟随文件上传的参数
     };
 
     // 解析请求文件事件
     busboy.on('file', function(fieldname, file, filename, encoding, mimetype) {
+      console.log(
+        `File-file[${fieldname}]: filename: ${filename}, encoding: ${encoding}, mimetype: ${mimetype}`
+      );
       let fileName =
         Math.random()
           .toString(16)
@@ -64,15 +74,21 @@ function uploadFile(ctx, options) {
       let _uploadFilePath = path.join(filePath, fileName);
       let saveTo = path.join(_uploadFilePath);
 
+      console.log(_uploadFilePath);
+
       // 文件保存到制定路径
       file.pipe(fs.createWriteStream(saveTo));
 
       // 文件写入事件结束
       file.on('end', function() {
         result.status = true;
-        result.filePath = `/upload/${fileType}/${fileName}`;
-        // pictureUrl: `//${ctx.host}/image/${fileType}/${fileName}`;
-        console.log('文件上传成功！');
+        let successFilePath = `/upload/${fileType}/${dayjs().format(
+          'YYYY-MM-DD'
+        )}/${fileName}`;
+
+        result.filePath = successFilePath; // 返回保存的路径
+        console.log(`${filename} 上传成功！`);
+        // resolve(result);
       });
     });
 
@@ -91,7 +107,7 @@ function uploadFile(ctx, options) {
 
     // 解析结束事件
     busboy.on('finish', function() {
-      console.log('文件上结束');
+      console.log('文件上传结束');
       resolve(result);
     });
 

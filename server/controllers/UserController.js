@@ -46,15 +46,10 @@ class userController {
       errno: 0,
       errmsg: '操作成功'
     };
-    // 上传文件请求处理
-    let serverFilePath = `${methods.publicPath()}/upload`;
-    console.log(serverFilePath);
 
     // 上传文件事件
     var uploadResult = await uploadFile(ctx, {
-      fileType: 'file',
-      // fileType: 'image',
-      path: serverFilePath
+      fileType: 'file'
     });
 
     if (uploadResult.status) {
