@@ -10,6 +10,8 @@ const cors = require('koa2-cors');
 const requireDirectory = require('require-directory'); // 路由的自动加载
 const moduleAlias = require('module-alias'); // 路径别名
 const koaStatic = require('koa-static');
+const dayjs = require('dayjs'); // 时间和日期 依赖库
+// const chalk = require('chalk'); // 修改控制台中字符串的样式
 
 const app = new Koa();
 
@@ -30,8 +32,10 @@ app.use(
 );
 app.use(json());
 app.use(logger());
-
-const methods = require('@/util/methods');
+// log => {
+//   console.log(dayjs().format('YYYY-MM-DD HH:mm:ss.SSS') + log);
+// };
+const methods = require('@/utils/methods');
 app.use(koaStatic(methods.webPath())); // 静态资源 web ：存在前端页面代码
 app.use(koaStatic(methods.publicPath())); // 静态资源 public ：存放资源文件
 
@@ -40,7 +44,11 @@ app.use(async (ctx, next) => {
   const start = new Date();
   await next();
   const ms = new Date() - start;
-  console.log(`${ctx.method} ${ctx.url} - ${ms}ms - ${new Date()}`);
+  console.log(
+    `${ctx.method} ${ctx.url} - ${ms}ms - ${dayjs().format(
+      'YYYY-MM-DD HH:mm:ss.SSS'
+    )}`
+  );
 });
 
 // error-handling
@@ -52,8 +60,9 @@ app.on('error', (err, ctx) => {
 // 1 配置根路由
 
 const router_root = router();
+router_root.prefix('/api'); // 根路由中增加前缀
+
 // 在根路由中注册子路由
-router_root.prefix('/api');
 
 // 1.1 手动加载路由
 // const index = require('./routes/index'); // 手动加载路由

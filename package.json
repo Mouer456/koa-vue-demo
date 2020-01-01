@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
+    "init_sql": "node init/index.js",
     "start": "node server/bin/www",
     "dev": "./node_modules/.bin/nodemon server/bin/www",
     "prd": "pm2 start server/bin/www",
@@ -10,10 +11,10 @@
   },
   "dependencies": {
     "busboy": "^0.3.1",
+    "dayjs": "^1.8.18",
     "debug": "^4.1.1",
     "koa": "^2.7.0",
     "koa-bodyparser": "^4.2.1",
-    "koa-convert": "^1.2.0",
     "koa-cors": "0.0.16",
     "koa-json": "^2.0.2",
     "koa-logger": "^3.2.0",

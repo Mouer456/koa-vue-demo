@@ -1,6 +1,6 @@
 const userModel = require('@/models/userModel');
-const { uploadFile } = require('@/util/upload');
-const methods = require('@/util/methods');
+const { uploadFile } = require('@/utils/upload');
+const methods = require('@/utils/methods');
 
 class userController {
   // 用户登录
