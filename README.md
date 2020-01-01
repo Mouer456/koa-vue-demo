@@ -88,3 +88,17 @@ npm run dev
 ### 访问项目 demo
 
 http://localhost:3000
+
+## 自动化部署
+
+```sh
+# 全局安装 pm2
+npm install pm2 -g
+
+# 启动 nodejs 程序
+npm run prd
+```
+
+## 参考
+
+[Koa2 进阶学习笔记](https://github.com/chenshenhai/koa2-note)
