@@ -6,7 +6,8 @@ router.prefix('/user');
 // 用户模块
 router.post('/login', userController.login);
 router.get('/userinfo', userController.userInfo);
-router.get('/userAllInfo', userController.userAllInfo);
+router.get('/userAllInfo', userController.userAllInfo); // mysql
+router.get('/userAllInfo_sqlite', userController.userAllInfo_sqlite); // sqlite3
 router.post('/upload/file', userController.uploadFile); // 上传文件/图片
 
 // 接口格式定义

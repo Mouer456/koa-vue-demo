@@ -1,3 +1,4 @@
+// mysql
 // 参考 https://chenshenhai.github.io/koa2-note/note/mysql/async.html
 
 const mysql = require('mysql');
@@ -12,7 +13,7 @@ let query = function(sql, values) {
         reject(err);
       } else {
         connection.query(sql, values, (error, results) => {
-          if (err) {
+          if (error) {
             reject(error);
           } else {
             resolve(results);

@@ -1,10 +1,18 @@
-const { query } = require('@/utils/db');
+const db = require('@/utils/db');
+const sqlite = require('@/utils/db-sqlite3');
 
 class userModel {
-  // 获取所有的用户信息
+  // 获取所有的用户信息 mysql
   async userAllInfo() {
     let sql = 'SELECT * FROM user_info';
-    let dataList = await query(sql);
+    let dataList = await db.query(sql);
+    return dataList;
+  }
+
+  // 获取所有的用户信息 sqlite3
+  async userAllInfo_sqlite() {
+    let sql = 'SELECT * FROM user_info';
+    let dataList = await sqlite.query(sql);
     return dataList;
   }
 }

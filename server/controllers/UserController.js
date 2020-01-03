@@ -33,9 +33,15 @@ class userController {
     };
   }
 
-  // 获取所有的用户信息
+  // 获取所有的用户信息 mysql
   async userAllInfo(ctx, next) {
     let data = await userModel.userAllInfo();
+    ctx.body = data;
+  }
+
+  // 获取所有的用户信息 sqlite3
+  async userAllInfo_sqlite(ctx, next) {
+    let data = await userModel.userAllInfo_sqlite();
     ctx.body = data;
   }
 

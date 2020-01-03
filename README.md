@@ -4,7 +4,7 @@
 
 - 后端：koa2 搭建 API 服务
 - 前端：Vue.js
-- 数据库：MySQL
+- 数据库：MySQL 或 Sqlite3
 
 ## 项目结构
 
@@ -20,6 +20,8 @@
 │   ├── routers/  # 路由目录
 │   ├── utils/  # 工具类目录
 │   └── app.js  # 后端服务入口文件
+├── sqlite/  # sqlite3 数据库
+│   └── mydatabase.db
 ├── web/  # 编译后前端代码目录
 ├── web_src/  # 前端 Vue.js 源码
 ├── config.js # 配置文件
