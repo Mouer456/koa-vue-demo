@@ -1,5 +1,8 @@
 // sqlite3
-// 参考 www.cnblogs.com/laden666666/p/6942717.html
+// npm install sqlite3 --save  # node-sqlite3 依赖
+// npm install sqlite --save  # 基于 node-sqlite3 的 Promise
+// juejin.im/post/5bc48f17e51d450e3d2d3404
+// www.cnblogs.com/laden666666/p/6942717.html
 
 const sqlite3 = require('sqlite3').verbose();
 const path = 'sqlite/mydatabase.db';
