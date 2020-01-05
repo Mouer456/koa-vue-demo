@@ -8,12 +8,12 @@ var app = require('../app');
 var debug = require('debug')('demo:server');
 var http = require('http');
 
-const config = require('./../../config');
 /**
  * Get port from environment and store in Express.
  */
 
-var port = normalizePort(process.env.PORT || config.port);
+// console.log(global.config.port);
+var port = normalizePort(process.env.PORT || global.config.port);
 // app.set('port', port);
 
 /**

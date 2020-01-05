@@ -8,5 +8,9 @@ module.exports = {
     user: 'root',
     password: '123456',
     database: 'test_db'
+  },
+  // SQLite 数据库路径配置
+  SQLitePath: {
+    mydatabase: 'sqlite/mydatabase.db'
   }
 };

@@ -2,9 +2,8 @@
 // 参考 https://chenshenhai.github.io/koa2-note/note/mysql/async.html
 
 const mysql = require('mysql');
-const config = require('./../../config');
 
-const pool = mysql.createPool(config.database);
+const pool = mysql.createPool(global.config.database);
 
 let query = function(sql, values) {
   return new Promise((resolve, reject) => {

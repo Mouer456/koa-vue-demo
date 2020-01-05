@@ -15,9 +15,13 @@ const dayjs = require('dayjs'); // 时间和日期 依赖库
 
 const app = new Koa();
 
+const config = require('./../config'); // 配置文件
+global.config = config; // 定义为全局变量
+// console.log(global.config);
+
 // 路径别名
 moduleAlias.addAliases({
-  '@': __dirname
+  '@': __dirname // server 目录
 });
 
 // error handler
@@ -35,9 +39,9 @@ app.use(logger());
 // log => {
 //   console.log(dayjs().format('YYYY-MM-DD HH:mm:ss.SSS') + log);
 // };
-const methods = require('@/utils/methods');
-app.use(koaStatic(methods.webPath())); // 静态资源 web ：存在前端页面代码
-app.use(koaStatic(methods.publicPath())); // 静态资源 public ：存放资源文件
+const { webPath, publicPath } = require('@/utils/methods');
+app.use(koaStatic(webPath())); // 静态资源 web ：存在前端页面代码
+app.use(koaStatic(publicPath())); // 静态资源 public ：存放资源文件
 
 // logger
 app.use(async (ctx, next) => {
