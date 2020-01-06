@@ -25,7 +25,8 @@ const methods = require('@/utils/methods'); // 公共方法
 
 // 定义为全局变量
 global.$config = config; // console.log($config);
-global.$methods = methods;
+global.$mydatabase = config.SQLitePath.mydatabase; // 全局定于SQLite数据库路径：'sqlite/mydatabase.db'
+global.$methods = methods; // 公共方法
 global.$dayjs = methods.dayjs; // dayjs 时间和日期 依赖库
 
 // error handler
