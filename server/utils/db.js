@@ -3,7 +3,7 @@
 
 const mysql = require('mysql');
 
-const pool = mysql.createPool(global.config.database);
+const pool = mysql.createPool($config.database);
 
 let query = function(sql, values) {
   return new Promise((resolve, reject) => {

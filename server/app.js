@@ -10,19 +10,23 @@ const cors = require('koa2-cors');
 const requireDirectory = require('require-directory'); // 路由的自动加载
 const moduleAlias = require('module-alias'); // 路径别名
 const koaStatic = require('koa-static');
-const dayjs = require('dayjs'); // 时间和日期 依赖库
 // const chalk = require('chalk'); // 修改控制台中字符串的样式
 
 const app = new Koa();
 
-const config = require('./../config'); // 配置文件
-global.config = config; // 定义为全局变量
-// console.log(global.config);
-
 // 路径别名
 moduleAlias.addAliases({
+  root: './../', // 项目根目录
   '@': __dirname // server 目录
 });
+
+const config = require('root/config'); // 配置文件
+const methods = require('@/utils/methods'); // 公共方法
+
+// 定义为全局变量
+global.$config = config; // console.log($config);
+global.$methods = methods;
+global.$dayjs = methods.dayjs; // dayjs 时间和日期 依赖库
 
 // error handler
 onerror(app);
@@ -39,9 +43,8 @@ app.use(logger());
 // log => {
 //   console.log(dayjs().format('YYYY-MM-DD HH:mm:ss.SSS') + log);
 // };
-const { webPath, publicPath } = require('@/utils/methods');
-app.use(koaStatic(webPath())); // 静态资源 web ：存在前端页面代码
-app.use(koaStatic(publicPath())); // 静态资源 public ：存放资源文件
+app.use(koaStatic($methods.webPath())); // 静态资源 web ：存在前端页面代码
+app.use(koaStatic($methods.publicPath())); // 静态资源 public ：存放资源文件
 
 // logger
 app.use(async (ctx, next) => {
@@ -49,7 +52,7 @@ app.use(async (ctx, next) => {
   await next();
   const ms = new Date() - start;
   console.log(
-    `${ctx.method} ${ctx.url} - ${ms}ms - ${dayjs().format(
+    `${ctx.method} ${ctx.url} - ${ms}ms - ${$dayjs().format(
       'YYYY-MM-DD HH:mm:ss.SSS'
     )}`
   );

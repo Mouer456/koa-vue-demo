@@ -6,7 +6,7 @@
 const sqlite3 = require('sqlite3').verbose();
 const Promise = require('bluebird');
 
-class SqlLite {
+class SQLite {
   // 打开数据库
   constructor(dbFilePath) {
     this.db = new sqlite3.Database(dbFilePath, err => {
@@ -26,7 +26,6 @@ class SqlLite {
   run(sql, params = []) {
     return new Promise((resolve, reject) => {
       this.db.run(sql, params, function(err) {
-        this.close();
         if (err) {
           console.log('Error running sql ' + sql);
           console.log(err);
@@ -41,14 +40,13 @@ class SqlLite {
   get(sql, params = []) {
     return new Promise((resolve, reject) => {
       this.db.get(sql, params, (err, result) => {
-        this.close();
         if (err) {
           console.log('Error running sql: ' + sql);
           console.log(err);
           reject(err);
         } else {
           resolve(result);
-        } 
+        }
       });
     });
   }
@@ -56,7 +54,6 @@ class SqlLite {
   all(sql, params = []) {
     return new Promise((resolve, reject) => {
       this.db.all(sql, params, (err, rows) => {
-        this.close();
         if (err) {
           console.log('Error running sql: ' + sql);
           console.log(err);
@@ -69,11 +66,11 @@ class SqlLite {
   }
 }
 
-module.exports = SqlLite;
+module.exports = SQLite;
 
 // module.exports = {
-//   SqlLite
-//   // mydatabase: new SqlLite(mydatabasePath)
+//   SQLite3,
+//   myDatabase: new SqlLite(global.myDatabase)
 // };
 
 // 建库命令

@@ -2,8 +2,6 @@ const inspect = require('util').inspect;
 const path = require('path');
 const fs = require('fs');
 const Busboy = require('busboy');
-const dayjs = require('dayjs');
-const methods = require('@/utils/methods');
 
 /**
  * @param  {string} dirname 目录绝对地址
@@ -44,10 +42,10 @@ function uploadFile(ctx, options) {
   // 获取类型
   let fileType = options.fileType || 'common';
   let filePath = path.join(
-    methods.publicPath(),
+    $methods.publicPath(),
     'upload',
     fileType,
-    dayjs().format('YYYY-MM-DD')
+    $dayjs().format('YYYY-MM-DD')
   );
   let mkdirResult = mkdirsSync(filePath);
 
@@ -82,7 +80,7 @@ function uploadFile(ctx, options) {
       // 文件写入事件结束
       file.on('end', function() {
         result.status = true;
-        let successFilePath = `/upload/${fileType}/${dayjs().format(
+        let successFilePath = `/upload/${fileType}/${$dayjs().format(
           'YYYY-MM-DD'
         )}/${fileName}`;
 

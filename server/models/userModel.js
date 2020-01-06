@@ -1,10 +1,11 @@
 const db = require('@/utils/db');
-const SqlLite = require('@/utils/db-sqlite3');
-
-const mydatabasePath = global.config.SQLitePath.mydatabase;
-const myDatabase = new SqlLite(mydatabasePath);
+const SQLite3 = require('@/utils/db-sqlite3');
 
 class userModel {
+  constructor() {
+    this.myDatabase = new SQLite3($config.SQLitePath.mydatabase);
+  }
+
   // 获取所有的用户信息 mysql
   async userAllInfo() {
     let sql = 'SELECT * FROM user_info';
@@ -15,7 +16,7 @@ class userModel {
   // 获取所有的用户信息 sqlite3
   async userAllInfo_sqlite() {
     let sql = 'SELECT * FROM user_info';
-    let dataList = await myDatabase.all(sql);
+    let dataList = this.myDatabase.all(sql);
     return dataList;
   }
 }
