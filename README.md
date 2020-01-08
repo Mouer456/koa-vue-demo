@@ -62,8 +62,10 @@ module.exports = {
 #### 编译打包前端静态代码
 
 ```sh
-# 安装前端 Vuejs 依赖：
+# 进入到前端 Vuejs 源代码文件夹 web_src：
 cd web_src
+
+# 安装依赖：
 npm install
 
 # 编译打包：

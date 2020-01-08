@@ -45,7 +45,7 @@ function uploadFile(ctx, options) {
     $methods.publicPath(),
     'upload',
     fileType,
-    $dayjs().format('YYYY-MM-DD')
+    dayjs().format('YYYY-MM-DD')
   );
   let mkdirResult = mkdirsSync(filePath);
 
@@ -80,7 +80,7 @@ function uploadFile(ctx, options) {
       // 文件写入事件结束
       file.on('end', function() {
         result.status = true;
-        let successFilePath = `/upload/${fileType}/${$dayjs().format(
+        let successFilePath = `/upload/${fileType}/${dayjs().format(
           'YYYY-MM-DD'
         )}/${fileName}`;
 
