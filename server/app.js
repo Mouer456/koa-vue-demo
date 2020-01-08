@@ -23,14 +23,16 @@ moduleAlias.addAliases({
 const config = require('root/config'); // 配置文件
 const methods = require('@/utils/methods'); // 公共方法
 
-// 定义为全局变量
+/******************** 全局变量 start ********************/
 global.$config = config; // console.log($config);
 global.$mydatabase = config.SQLitePath.mydatabase; // 全局定于SQLite数据库路径：'sqlite/mydatabase.db'
 global.$methods = methods; // 公共方法
 global.dayjs = methods.dayjs; // dayjs 时间和日期 依赖库
 
 global.logger = require('@/utils/log'); // log4js
-// logger.info('Something important');
+// 示例：logger.info('Something important');
+
+/******************** 全局变量 end ********************/
 
 // error handler
 onerror(app);
@@ -67,35 +69,47 @@ app.on('error', (err, ctx) => {
   console.error('server error', err, ctx);
 });
 
-// routes
-// 1 配置根路由
+/*
+ * 路由1：router_views 不配置路由前缀
+ */
+const router_views = new router();
+router_views.get('/index', function(ctx, next) {
+  ctx.body = 'this is a home!';
+});
+app.use(router_views.routes(), router_views.allowedMethods());
 
-const router_root = router();
-router_root.prefix('/api'); // 根路由中增加前缀
+// 或
+// const user = require('./routes/user');
+// app.use(user.routes(), user.allowedMethods());
+
+/******************** 路由1: router_views end ********************/
+
+/*
+ * 路由2：router_api 配置路由前缀 api
+ */
+const router_api = router(); // api 根路由
+router_api.prefix('/api'); // 配置路由前缀
 
 // 在根路由中注册子路由
 
-// 1.1 手动加载路由
-// const index = require('./routes/index'); // 手动加载路由
+// a. 手动加载注册子路由
+// const index = require('./routes/index');
 // const user = require('./routes/user');
-// router_root.use(index.routes(), index.allowedMethods());
-// router_root.use(user.routes(), user.allowedMethods());
+// router_api.use(index.routes(), index.allowedMethods());
+// router_api.use(user.routes(), user.allowedMethods());
 
-// 1.2 自动加载路由
+// b. 自动加载注册子路由
 const modules = requireDirectory(module, './routes', {
   visit: whenLoadModule
 });
 function whenLoadModule(obj) {
   if (obj instanceof router) {
-    router_root.use(obj.routes(), obj.allowedMethods());
+    router_api.use(obj.routes(), obj.allowedMethods());
   }
 }
 
-// 在app中注册根路由
-app.use(router_root.routes(), router_root.allowedMethods());
+app.use(router_api.routes(), router_api.allowedMethods()); // 在app中注册根路由
 
-// 2. 不配置根路由
-// app.use(index.routes(), index.allowedMethods());
-// app.use(user.routes(), user.allowedMethods());
+/******************** 路由2: router_api end ********************/
 
 module.exports = app;
