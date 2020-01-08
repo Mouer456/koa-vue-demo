@@ -22,3 +22,5 @@ package-lock.json
 
 # 打包后的前端静态代码
 web
+# 日志
+logs
