@@ -63,7 +63,8 @@ module.exports = {
 
 ```sh
 # 安装前端 Vuejs 依赖：
-cd web_src ; npm install
+cd web_src
+npm install
 
 # 编译打包：
 npm run build
