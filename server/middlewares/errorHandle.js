@@ -4,7 +4,7 @@
 const errorHandle = (ctx, next) => {
   return next().catch(err => {
     let status = err.status || 500;
-    // ctx.status = status;
+    ctx.status = status;
     return ctx.sendError(
       status,
       err.originalError ? err.originalError.message : err.message
