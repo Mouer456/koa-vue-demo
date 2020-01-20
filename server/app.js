@@ -78,8 +78,8 @@ app.on('error', (err, ctx) => {
   console.error('server error', err, ctx);
 });
 
-app.use(sendHandle()); // 统一返回 json 格式
-app.use(errorHandle); // 验证token异常处理
+app.use(sendHandle()); // 统一定义返回 json 格式
+app.use(errorHandle); // 异常处理
 
 /******************** middlewares end ********************/
 

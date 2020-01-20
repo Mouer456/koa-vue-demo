@@ -15,7 +15,7 @@ class userController {
       return ctx.sendError(101, '账号和密码不能为空');
     }
 
-    let dbResult = await userModel.userOne(account);
+    let dbResult = await userModel.userOne(account); // 异常处理
     if ($methods.isEmpty(dbResult)) {
       return ctx.sendError(102, '该账号未注册');
     }
