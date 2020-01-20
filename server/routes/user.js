@@ -4,6 +4,7 @@ const userController = require('@/controllers/userController');
 router.prefix('/user');
 
 // 用户模块
+// router.post('/register', userController.register);
 router.post('/login', userController.login);
 router.get('/userinfo', userController.userInfo);
 router.get('/userAllInfo', userController.userAllInfo); // mysql

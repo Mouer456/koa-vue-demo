@@ -1,4 +1,6 @@
-// 参考 https://juejin.im/post/5d255d05518825424d656e11
+// 参考:
+// https://juejin.im/post/5d255d05518825424d656e11
+// https://juejin.im/post/5cd11420f265da036d79d0f3
 
 const Koa = require('koa');
 const json = require('koa-json');
@@ -97,6 +99,12 @@ router_api.prefix('/api'); // 配置路由前缀
 // const user = require('./routes/user');
 // router_api.use(index.routes(), index.allowedMethods());
 // router_api.use(user.routes(), user.allowedMethods());
+
+// 或采用 use 方式分别配置前缀
+// const index = require('./routes/index');
+// const index2 = require('./routes/index2');
+// router_api.use('/api/v1', index.routes(), index.allowedMethods());
+// router_api.use('/api/v2', index2.routes(), index2.allowedMethods());
 
 // b. 自动加载注册子路由
 const modules = requireDirectory(module, './routes', {

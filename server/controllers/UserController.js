@@ -5,8 +5,11 @@ class userController {
   // 用户登录
   async login(ctx, next) {
     // 获取请求提交的数据
-    let name = ctx.request.body.name || '',
-      pwd = ctx.request.body.pwd || '';
+    const user = ctx.request.body;
+
+    const name = user.name || '',
+      pwd = user.pwd || '';
+
     console.log(name, pwd);
 
     // do something

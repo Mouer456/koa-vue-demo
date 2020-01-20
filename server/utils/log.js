@@ -4,7 +4,7 @@ log4js.configure({
   appenders: {
     all: {
       type: 'file',
-      filename: `logs/${dayjs().format('YYYY-MM-DD')}.log`
+      filename: `log/${dayjs().format('YYYY-MM-DD')}.log`
     }
   },
   categories: {
