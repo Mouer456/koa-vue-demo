@@ -1,23 +1,45 @@
 const userModel = require('@/models/userModel');
 const { uploadFile } = require('@/utils/upload');
+const jwt = require('jsonwebtoken'); // 用于签发、解析 token
+const md5 = require('md5'); // md5
 
 class userController {
   // 用户登录
   async login(ctx, next) {
-    // 获取请求提交的数据
-    const user = ctx.request.body;
+    const body = ctx.request.body;
 
-    const name = user.name || '',
-      pwd = user.pwd || '';
+    const account = body.account,
+      password = body.password;
 
-    console.log(name, pwd);
+    if (!account || !password) {
+      return ctx.sendError(101, '账号和密码不能为空');
+    }
 
-    // do something
+    let dbResult = await userModel.userOne(account);
+    if ($methods.isEmpty(dbResult)) {
+      return ctx.sendError(102, '该账号未注册');
+    }
 
-    ctx.body = {
-      status: true,
-      token: '123'
+    if (dbResult.password != md5(password)) {
+      return ctx.sendError(103, '账号或者密码错误');
+    }
+
+    let secret = $config.secret; // jwt 密钥
+    let payload = {
+      account: dbResult.account,
+      id: dbResult.id
     };
+    let token = jwt.sign(payload, secret, {
+      expiresIn: '5h' // 60：60秒; '5h':5小时
+    });
+
+    return ctx.send({ token }, '登录成功');
+
+    // 或 默认返回方式
+    // ctx.body = {
+    //   status: true,
+    //   token
+    // };
   }
 
   // 用户信息
@@ -29,10 +51,11 @@ class userController {
       name: 'jk',
       age: 25
     };
-    ctx.body = {
-      status: true,
-      data
-    };
+    // ctx.body = {
+    //   status: true,
+    //   data
+    // };
+    return ctx.send(data);
   }
 
   // 获取所有的用户信息 mysql
@@ -44,7 +67,8 @@ class userController {
   // 获取所有的用户信息 sqlite3
   async userAllInfo_sqlite(ctx, next) {
     let data = await userModel.userAllInfo_sqlite();
-    ctx.body = data;
+    // ctx.body = data;
+    return ctx.send(data);
   }
 
   //  上传文件/图片

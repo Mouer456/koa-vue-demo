@@ -59,7 +59,7 @@ const SQLite = {
   },
   // 查询一条数据
   get: function(dbFilePath, sql, params = []) {
-    let db = new sqlite3.database(dbFilePath);
+    let db = this.database(dbFilePath);
     return new Promise((resolve, reject) => {
       db.get(sql, params, (err, result) => {
         this.close(db);

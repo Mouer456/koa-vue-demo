@@ -1,9 +1,8 @@
 const router = require('koa-router')();
 const userController = require('@/controllers/userController');
 
-router.prefix('/user');
-
 // 用户模块
+router.prefix('/user');
 // router.post('/register', userController.register);
 router.post('/login', userController.login);
 router.get('/userinfo', userController.userInfo);

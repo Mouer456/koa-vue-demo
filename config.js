@@ -12,5 +12,6 @@ module.exports = {
   // SQLite 数据库路径配置
   SQLitePath: {
     mydatabase: 'sqlite/mydatabase.db'
-  }
+  },
+  secret: 'secret' // jsonwebtoken/token 密钥
 };

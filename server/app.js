@@ -2,17 +2,22 @@
 // https://juejin.im/post/5d255d05518825424d656e11
 // https://juejin.im/post/5cd11420f265da036d79d0f3
 
-const Koa = require('koa');
-const json = require('koa-json');
-const onerror = require('koa-onerror');
-const bodyparser = require('koa-bodyparser');
-const koaLogger = require('koa-logger');
-const router = require('koa-router');
-const cors = require('koa2-cors');
-const requireDirectory = require('require-directory'); // 路由的自动加载
-const moduleAlias = require('module-alias'); // 路径别名
-const koaStatic = require('koa-static');
+const Koa = require('koa'),
+  json = require('koa-json'),
+  onerror = require('koa-onerror'),
+  bodyparser = require('koa-bodyparser'),
+  koaLogger = require('koa-logger'),
+  router = require('koa-router'),
+  cors = require('koa2-cors'),
+  requireDirectory = require('require-directory'), // 路由的自动加载
+  moduleAlias = require('module-alias'), // 路径别名
+  koaStatic = require('koa-static'),
+  jwtKoa = require('koa-jwt'); // 用于路由权限控制
 // const chalk = require('chalk'); // 修改控制台中字符串的样式
+
+// 自定义中间件
+const sendHandle = require('./middlewares/sendHandle.js'), // 统一返回 json 格式，中间件
+  errorHandle = require('./middlewares/errorHandle.js'); // 验证token异常处理，如token过期、token错误
 
 const app = new Koa();
 
@@ -22,10 +27,11 @@ moduleAlias.addAliases({
   '@': __dirname // server 目录
 });
 
-const config = require('root/config'); // 配置文件
-const methods = require('@/utils/methods'); // 公共方法
-
 /******************** 全局变量 start ********************/
+
+const config = require('root/config'); // 配置文件
+const methods = require('./utils/methods'); // 公共方法
+
 global.$config = config; // console.log($config);
 global.$mydatabase = config.SQLitePath.mydatabase; // 全局定于SQLite数据库路径：'sqlite/mydatabase.db'
 global.$methods = methods; // 公共方法
@@ -36,6 +42,7 @@ global.logger = require('@/utils/log'); // log4js
 
 /******************** 全局变量 end ********************/
 
+/******************** middlewares start ********************/
 // error handler
 onerror(app);
 
@@ -70,6 +77,23 @@ app.use(async (ctx, next) => {
 app.on('error', (err, ctx) => {
   console.error('server error', err, ctx);
 });
+
+app.use(sendHandle()); // 统一返回 json 格式
+app.use(errorHandle); // 验证token异常处理
+
+/******************** middlewares end ********************/
+
+/* 路由权限控制 */
+app.use(
+  jwtKoa({ secret: $config.secret }).unless({
+    // 设置login、register接口，可以不需要认证访问
+    path: [
+      /^\/api\/user\/login/, // /^\/api\/user\/login/
+      /^\/api\/user\/register/,
+      /^((?!\/api).)*$/ // 设置除了私有接口外的其它资源，可以不需要认证访问
+    ]
+  })
+);
 
 /*
  * 路由1：router_views 不配置路由前缀
