@@ -54,7 +54,7 @@ function uploadFile(ctx, options) {
 
     let result = {
       status: false, // 上传结果
-      filePath: '', // 保存的路径
+      // filePath: {}, // 保存的路径
       formData: {} // 跟随文件上传的参数
     };
 
@@ -84,7 +84,9 @@ function uploadFile(ctx, options) {
           'YYYY-MM-DD'
         )}/${fileName}`;
 
-        result.filePath = successFilePath; // 返回保存的路径
+        // result.filePath[fieldname] = successFilePath; // 返回保存的路径; 改为可以多文件/图片上传 2020-2-25 09:49:25
+
+        result.formData[fieldname] = successFilePath;
         console.log(`${filename} 上传成功！`);
         // resolve(result);
       });
@@ -100,7 +102,8 @@ function uploadFile(ctx, options) {
       mimetype
     ) {
       console.log('表单字段数据 [' + fieldname + ']: value: ' + inspect(val));
-      result.formData[fieldname] = inspect(val);
+      // result.formData[fieldname] = inspect(val);
+      result.formData[fieldname] = val;
     });
 
     // 解析结束事件
